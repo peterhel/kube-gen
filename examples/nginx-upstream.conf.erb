@@ -1,0 +1,13 @@
+<% if (object.metadata.name === 'sonarqube') { %>
+upsteam <%= object.metadata.name %> {
+  <% pods.items.forEach(pod => { %><%= pod.spec.nodeName %>:<%= ports.web.nodePort %>;
+  <% }) %>
+}
+
+server {
+    location / {
+        proxy_pass http://<%= object.metadata.name %>;
+    }
+}
+<% } %>
+
