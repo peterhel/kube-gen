@@ -1,11 +1,11 @@
 {
-  "name": "monitor",
+  "name": "kubegen",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "commander": "2.9.0",
     "ejs": "2.5.6",
-    "pug": "2.0.0-beta11",
     "typescript": "2.2.2"
   },
   "devDependencies": {},

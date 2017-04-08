@@ -1,16 +1,19 @@
-import * as  http from 'http';
+import * as http from 'http';
 import * as readline from 'readline';
 import * as querystring from 'querystring';
+import * as init from './init-app'
+import * as ejs from 'ejs';
 
-const ejs = require('ejs');
+const args = init.getArgs()
+const config = init.getConfig();
 
 // Compile the source code
 
-function getPods(selector): any {
-    return new Promise(resolve => {
+async function getPods(selector): Promise<any> {
+    return await new Promise(resolve => {
         http.get({
-            host: 'seh-docker-mgr01.3db.local',
-            port: 8080,
+            host: config.host,
+            port: config.port,
             path: `/api/v1/pods?labelSelector=${encodeURIComponent(querystring.stringify(selector))}`
         }, response => {
             let content = '';
@@ -52,11 +55,15 @@ http.get({
                 })
                 data.pods = pods;
                 data.ports = ports;
-                require('fs').writeFileSync(process.argv[4], ejs.render(require('fs').readFileSync(process.argv[3], 'utf8'), data), 'utf8')
+                require('fs').writeFileSync(args.outFile, ejs.render(require('fs').readFileSync(process.argv[3], 'utf8'), data), 'utf8')
+                if(args.command) {
+                    console.log(`Running command: ${args.command}`);
+                }
             });
         }
     });
 });
+
 /*
 resp = requests.get('http://localhost:8001/api/v1/pods',
                     params={'watch': 'true'}, stream=True)
