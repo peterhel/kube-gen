@@ -15,7 +15,7 @@ export function getArgs(): any {
         }
 
         const [metadataName, templateFile, outFile] = program.args;
-console.log(program.cmd);
+
         return {
             metadataName, 
             templateFile, 
