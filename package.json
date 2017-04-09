@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "kubegen": "bin/kubegen"
+  },
   "dependencies": {
     "commander": "2.9.0",
     "ejs": "2.5.6",
@@ -12,7 +15,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node build/"
+    "start": "node build/",
+    "preview": "npm pack; tar --list -f *.tgz; rm *.tgz"
   },
   "author": "",
   "license": "ISC"
