@@ -1,27 +1,23 @@
 import * as fs from 'fs';
 import * as program from 'commander';
+import { Args } from './args';
 
-export function getArgs(): any {
-        program
-            .arguments('<metadataName>')
-            .arguments('<templateFile>')
-            .arguments('<outFile>')
-            .option('-c, --cmd [value]', 'Command to execute when template has been updated.')
-            .parse(process.argv);
+export function getArgs(): Args {
+    program
+        .arguments('<metadataName>')
+        .arguments('<templateFile>')
+        .arguments('<outFile>')
+        .option('-c, --cmd [value]', 'Command to execute when template has been updated.')
+        .parse(process.argv);
 
-        if (process.argv.length < 5) {
-            program.outputHelp();
-            process.exit(1);
-        }
+    if (process.argv.length < 5) {
+        program.outputHelp();
+        process.exit(1);
+    }
 
-        const [metadataName, templateFile, outFile] = program.args;
+    const [metadataName, templateFile, outFile] = program.args;
 
-        return {
-            metadataName, 
-            templateFile, 
-            outFile,
-            command: program.cmd
-        };
+    return new Args(metadataName, templateFile, outFile, program.cmd);
 }
 
 export function getConfig() {

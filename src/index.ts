@@ -3,11 +3,16 @@ import * as readline from 'readline';
 import * as querystring from 'querystring';
 import * as init from './init-app'
 import * as ejs from 'ejs';
+import { EventEmitter } from 'events';
+import { Spawner } from './spawner';
 
 const args = init.getArgs()
 const config = init.getConfig();
+const events = new EventEmitter();
 
-// Compile the source code
+if(args.command) {
+    new Spawner(args.command, events);
+}
 
 async function getPods(selector): Promise<any> {
     return await new Promise(resolve => {
@@ -47,7 +52,7 @@ http.get({
 
     rl.on('line', line => {
         const data = JSON.parse(line);
-        if (data.object.metadata.name === process.argv[2]) {
+        if (data.object.metadata.name === args.metadataName) {
             getPods(data.object.spec.selector).then(pods => {
                 const ports = {}
                 data.object.spec.ports.forEach(x => {
@@ -55,10 +60,8 @@ http.get({
                 })
                 data.pods = pods;
                 data.ports = ports;
-                require('fs').writeFileSync(args.outFile, ejs.render(require('fs').readFileSync(process.argv[3], 'utf8'), data), 'utf8')
-                if(args.command) {
-                    console.log(`Running command: ${args.command}`);
-                }
+                require('fs').writeFileSync(args.outFile, ejs.render(require('fs').readFileSync(args.templateFile, 'utf8'), data), 'utf8')
+                events.emit('run-command');
             });
         }
     });
