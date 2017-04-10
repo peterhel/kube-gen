@@ -19,16 +19,11 @@ export class Spawner {
             const args = frags;
             const cmd = spawn(exec, args);
 
-            cmd.stdout.on('data', (data) => {
-                console.log(`stdout: ${data}`);
-            });
-
-            cmd.stderr.on('data', (data) => {
-                console.log(`stderr: ${data}`);
-            });
+            cmd.stdout.pipe(process.stdout);
+            cmd.stderr.pipe(process.stderr);
 
             cmd.on('close', (code) => {
-                console.log(`child process exited with code ${code}`);
+                console.log(`${command} exited with code ${code}`);
             });
         } catch (e) {
             console.error(e);

@@ -1,5 +1,5 @@
 upstream <%= object.metadata.name %> {
-  <% pods.items.forEach(pod => { %>server <%= pod.spec.nodeName %>:<%= ports.web.nodePort %>;
+  <% pods.items.forEach(pod => { %>server <%= pod.spec.nodeName %>:<%= ports.web && ports.web.nodePort || object.spec.ports[0].nodePort %>;
   <% }) %>
 }
 
