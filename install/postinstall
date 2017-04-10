@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+export NGXDIR=$(nginx -V 2>&1 | grep -oP 'prefix=(\S+)' | awk -F'=' '{print $2}')
+envsubst < install/install-service | tee /tmp/${npm_package_name}-install-service
+envsubst < install/systemd.service | tee /tmp/${npm_package_name}.service

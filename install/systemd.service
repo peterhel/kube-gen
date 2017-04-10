@@ -10,7 +10,7 @@ RestartSec=10                       # Restart service after 10 seconds if node s
 StandardOutput=syslog               # Output to syslog
 StandardError=syslog                # Output to syslog
 SyslogIdentifier=$npm_package_name
-#User=<alternate user>
+User=$USER
 #Group=<alternate group>
 #Environment=NODE_ENV=production PORT=1337
 
