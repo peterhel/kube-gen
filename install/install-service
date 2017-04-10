@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+source ../lib/node_modules/kubegen/install/env
+if pidof systemd
+then
+    export NGXDIR=$(nginx -V 2>&1 | grep -oP 'prefix=(\S+)' | awk -F'=' '{print $2}')
+    envsubst < "$npm_config_prefix/lib/node_modules/$npm_package_name/install/${npm_package_name}.service" | sudo tee /etc/systemd/system/${npm_package_name}.service
+
+    sudo systemctl enable ${npm_package_name}.service
+    sudo systemctl start ${npm_package_name}.service
+    sudo systemctl status ${npm_package_name}.service
+
+    exit 0
+fi
+
+echo "No compatible init system was found"
+
+# pidof /sbin/init && echo "sysvinit" || echo "other"
