@@ -1,9 +1,10 @@
-upsteam <%= object.metadata.name %> {
-  <% pods.items.forEach(pod => { %><%= pod.spec.nodeName %>:<%= ports.web.nodePort %>;
+upstream <%= object.metadata.name %> {
+  <% pods.items.forEach(pod => { %>server <%= pod.spec.nodeName %>:<%= ports.web.nodePort %>;
   <% }) %>
 }
 
 server {
+    server_name <%= object.metadata.name %>.example.com;
     location / {
         proxy_pass http://<%= object.metadata.name %>;
     }
