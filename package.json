@@ -24,7 +24,7 @@
     "start": "bin/kubegen",
     "preview": "npm pack; tar --list -f *.tgz; rm *.tgz",
     "prepublish": "npm run build",
-    "postinstall": "env > $npm_config_prefix/lib/node_modules/$npm_package_name/install/env"
+    "postinstall": "install/postinstall"
   },
   "author": "",
   "license": "ISC"
