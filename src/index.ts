@@ -44,7 +44,7 @@ function render(data) {
 http.get({
     host: config.host,
     port: config.port,
-    path: `/api/v1/services?watch=true`
+    path: `/api/v1${args.namespace && '/namespaces/' + args.namespace || ''}/services?watch=true`
 }, response => {
     const rl = readline.createInterface({
         input: response
@@ -54,7 +54,7 @@ http.get({
 
     rl.on('line', line => {
         const data = JSON.parse(line);
-
+console.log(line);
         getPods(data.object.spec.selector).then(pods => {
             const ports = {}
             data.object.spec.ports.forEach(x => {

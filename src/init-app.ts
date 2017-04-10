@@ -8,6 +8,7 @@ export function getArgs(): Args {
         .arguments('<templateFile>')
         .arguments('<outFile>')
         .option('-c, --cmd [value]', 'Command to execute when template has been updated.')
+        .option('-n, --namespace [value]', 'Kubernetes namespace')
         .parse(process.argv);
 
     if (process.argv.length < 5) {
@@ -17,7 +18,7 @@ export function getArgs(): Args {
 
     const [metadataName, templateFile, outFile] = program.args;
 
-    return new Args(metadataName, templateFile, outFile, program.cmd);
+    return new Args(metadataName, templateFile, outFile, program.cmd, program.namespace);
 }
 
 export function getConfig() {
