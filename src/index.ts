@@ -54,7 +54,7 @@ http.get({
 
     rl.on('line', line => {
         const data = JSON.parse(line);
-        //if (data.object.metadata.name === args.metadataName) {
+
         getPods(data.object.spec.selector).then(pods => {
             const ports = {}
             data.object.spec.ports.forEach(x => {
@@ -63,8 +63,10 @@ http.get({
             data.pods = pods;
             data.ports = ports;
 
+            const nodes = pods.items.map(p => p.spec.nodeName);
+            var uSet = new Set(nodes);
+            data.nodes = [...uSet];
             events.emit('object', data);
         });
-        //}
     });
 });
