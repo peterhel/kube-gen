@@ -55,18 +55,19 @@ http.get({
     rl.on('line', line => {
         const data = JSON.parse(line);
 
-        getPods(data.object.spec.selector).then(pods => {
-            let ports;
-            data.object.spec.ports.forEach(x => {
-                if (x.nodePort) {
-                    ports = ports || {};
-                    ports[x.name] = x;
-                }
-            })
-
-            if (!ports) {
-                return;
+        let ports;
+        data.object.spec.ports.forEach(x => {
+            if (x.nodePort) {
+                ports = ports || {};
+                ports[x.name] = x;
             }
+        })
+
+        if (!ports) {
+            return;
+        }
+
+        getPods(data.object.spec.selector).then(pods => {
 
             data.pods = pods;
             data.ports = ports;
