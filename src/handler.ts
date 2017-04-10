@@ -17,10 +17,8 @@ export class Handler {
             }
             else if ('*' === metadataName) {
                 file = outFile.replace(/\{(.+?)\}/, (match, x) => {
-                    return data.object.metadata[x];
-                    
+                    return data.object.metadata[x];                    
                 })
-                file = data.object.metadata.name;
             } else {
                 return;
             }
